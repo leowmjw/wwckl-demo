@@ -16,6 +16,8 @@ scipy = "*"
 python-levenshtein = "*"
 tensorflow = "==1.5"
 malaya = {git = "https://github.com/DevconX/Malaya.git", editable = true}
+tqdm = "*"
+requests = "*"
 
 
 [dev-packages]
