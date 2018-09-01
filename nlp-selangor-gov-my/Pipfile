@@ -1,0 +1,21 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+sklearn = "*"
+fuzzywuzzy = "*"
+nltk = "*"
+unidecode = "*"
+numpy = "*"
+scipy = "*"
+python-levenshtein = "*"
+tensorflow = "==1.5"
+malaya = {git = "https://github.com/DevconX/Malaya.git", editable = true}
+
+
+[dev-packages]

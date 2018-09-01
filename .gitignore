@@ -10,3 +10,9 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+# Any env for direnv
+.env*
+
+# Binary default name
+wwckl-demo
