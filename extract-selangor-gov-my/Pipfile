@@ -8,6 +8,8 @@ name = "pypi"
 [packages]
 
 "invoice2data" = "*"
+pytesseract = "*"
+"pdfminer.six" = "*"
 
 
 [dev-packages]
