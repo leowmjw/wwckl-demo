@@ -77,7 +77,7 @@
         "malaya": {
             "editable": true,
             "git": "https://github.com/DevconX/Malaya.git",
-            "ref": "b75a2f10b5db83986513796192bd90f7b932ce94"
+            "ref": "ddb1f582816259ffe8f3d4ab2fa6755d12c6e9f5"
         },
         "markdown": {
             "hashes": [
