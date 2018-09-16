@@ -29,6 +29,7 @@ func main() {
 	if readerr != nil {
 		log.Fatal("ERR:", readerr)
 	}
+	// Needs to verify first otherwise page count is not in there ..
 	valerr := pdfcpu.ValidateXRefTable(pdfctx.XRefTable)
 	if valerr != nil {
 		log.Fatal("val_ERR: ", valerr)
@@ -51,4 +52,11 @@ func main() {
 	if exerr != nil {
 		log.Fatal("explore_ERR: ", exerr)
 	}
+
+	// Experiment #2: Use pdf, vs unidoc
+	// Not so good; and have watermark license ..
+	exploreContentWithUnidoc(sourceFileName)
+	// Experiment #3: go-fitz vs docconv
+	// Fitx is pretty good
+	// exploreContentWithFitz(sourceFileName)
 }
