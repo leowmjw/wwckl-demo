@@ -27,6 +27,7 @@
 - https://github.com/UW-Deepdive-Infrastructure/table-extract
 - https://github.com/ashima/pdf-table-extract
 - If all else fails - https://github.com/WZBSocialScienceCenter/pdftabextract
+- https://github.com/jung-kurt/gofpdf#gofpdf
 
 ## Running
 
