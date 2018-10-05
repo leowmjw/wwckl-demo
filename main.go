@@ -53,9 +53,12 @@ func main() {
 		log.Fatal("explore_ERR: ", exerr)
 	}
 
-	// Experiment #2: Use pdf, vs unidoc
+	// Experiment #2: Use rsc/pdf, vs unidoc
 	// Not so good; and have watermark license ..
-	exploreContentWithUnidoc(sourceFileName)
+	// exploreContentWithUnidoc(sourceFileName)
+	exploreContentWithRSCPdf(sourceFileName)
+	rotatedFileName := "./extract-selangor-gov-my/samples/Selangor-Penyata-JP-PBT.pdf"
+	exploreRotatedWithUnidoc(rotatedFileName)
 	// Experiment #3: go-fitz vs docconv
 	// Fitx is pretty good
 	// exploreContentWithFitz(sourceFileName)

@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"os"
+
+	"github.com/davecgh/go-spew/spew"
 
 	"github.com/gen2brain/go-fitz"
 
@@ -14,6 +17,8 @@ import (
 
 	"github.com/unidoc/unidoc/pdf/extractor"
 	unidocpdf "github.com/unidoc/unidoc/pdf/model"
+
+	rscpdf "github.com/ledongthuc/pdf"
 )
 
 // All extracted from pdfcpu .. da best!
@@ -247,6 +252,39 @@ func exploreContentWithUnidoc(fileName string) error {
 	return nil
 }
 
+func exploreRotatedWithUnidoc(fileName string) error {
+	f, err := os.Open(fileName)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	pdfReader, err := unidocpdf.NewPdfReader(f)
+	if err != nil {
+		return err
+	}
+
+	numPage, err := pdfReader.GetNumPages()
+	if err != nil {
+		log.Fatal("pgNum_ERR:", err)
+	}
+	log.Println("Document has ", numPage, " page(s)")
+	for i := 0; i < 3; i++ {
+		pdfPage, err := pdfReader.GetPage(i + 1)
+		if err != nil {
+			log.Fatal("getPage_ERR: ", err)
+		}
+		// Below for structure ..
+		spew.Dump(pdfPage.Contents)
+		perr := processPage(pdfPage)
+		if perr != nil {
+			log.Fatal("process_ERR: ", perr)
+		}
+
+	}
+	return nil
+}
+
 func processPage(page *unidocpdf.PdfPage) error {
 	mBox, err := page.GetMediaBox()
 	if err != nil {
@@ -266,4 +304,77 @@ func processPage(page *unidocpdf.PdfPage) error {
 	fmt.Printf(" Page width: %f\n", pageWidth)
 
 	return nil
+}
+
+func exploreContentWithRSCPdf(fileName string) error {
+	f, r, err := rscpdf.Open(fileName)
+	if err != nil {
+		log.Fatal("RSCOpen_ERR: ", err)
+	}
+	defer f.Close()
+
+	// Below to read mulitple ..
+	// var buf bytes.Buffer
+
+	// b, err := r.GetPlainText()
+	// if err != nil {
+	// 	log.Fatal("PlainTXT_ERR: ", err)
+	// }
+
+	// n, err := buf.ReadFrom(b)
+	// if err != nil {
+	// 	log.Fatal("ReadFrm_ERR:", err)
+	// }
+	// log.Println("Read number of ", n)
+	// log.Println(buf.String())
+
+	numPage := r.NumPage()
+	log.Println("Document has ", numPage, " page(s)")
+	var textBuilder bytes.Buffer
+	for i := 0; i < 3; i++ {
+		// Must be page number; not zero indexed .. fireezes ..
+		p := r.Page(i + 1)
+		if p.V.IsNull() {
+			continue
+		}
+		lineStr, err := p.GetPlainText(nil)
+		if err != nil {
+			log.Fatal("GetTXT_ERR:", err)
+		}
+		textBuilder.WriteString(lineStr)
+	}
+
+	log.Println("+++++++++++++++++++++++++ INDIVIDUAL ++++++++++++++++++")
+	log.Println(textBuilder.String())
+
+	log.Println("======================= STYLED ========================")
+
+	for pageIndex := 1; pageIndex < 3; pageIndex++ {
+		p := r.Page(pageIndex)
+		if p.V.IsNull() {
+			continue
+		}
+		// spew.Dump(p)
+		log.Println("PAGE: ", pageIndex)
+		var lastTextStyle rscpdf.Text
+		texts := p.Content().Text
+		// If check empty for texts; the klen should show it does not have any text; needs OCR ..
+		for _, text := range texts {
+			if isSameSentence(text.S, lastTextStyle.S) {
+				lastTextStyle.S = lastTextStyle.S + text.S
+			} else {
+				fmt.Printf("Font: %s, Font-size: %f, x: %f, y: %f, content: %s \n", lastTextStyle.Font, lastTextStyle.FontSize, lastTextStyle.X, lastTextStyle.Y, lastTextStyle.S)
+				lastTextStyle = text
+			}
+		}
+		log.Println(lastTextStyle.S)
+	}
+
+	return nil
+}
+
+func isSameSentence(currentTxt string, ongoingTxt string) bool {
+	// If previous non-space; is '.' will end the sentence ..
+	// log.Println("NEW:", currentTxt, " ONGOING: ", ongoingTxt)
+	return true
 }

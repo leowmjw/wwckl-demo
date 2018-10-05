@@ -1,8 +1,8 @@
-test:
-	go test ./...
-
 build:
 	go build ./... && ./wwckl-demo
+
+test:
+	go test ./...
 
 deps:
 	go get github.com/davecgh/go-spew/spew
