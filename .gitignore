@@ -21,3 +21,7 @@ vendor
 
 # Binary default name
 wwckl-demo
+
+# Binaries from script compilation
+*.goc
+

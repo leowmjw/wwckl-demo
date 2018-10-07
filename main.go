@@ -1,3 +1,5 @@
+//usr/bin/env test -x $0 && (([ ! -x "${0}c" ] || [ "$0" -nt "${0}c" ]) && go build -o "${0}c" ./...; "${0}c" $@); exit "$?"
+// Great snippet from dsypniewski: https://gist.github.com/posener/73ffd326d88483df6b1cb66e8ed1e0bd; just chmod +x and run!  Works for multi files too ..
 package main
 
 import (

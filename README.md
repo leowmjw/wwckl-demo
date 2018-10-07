@@ -12,11 +12,15 @@ Demo used for Women Who Code KL(WWCKL) upcoming talk on Civic-Tech
 ## Install
 ```
 how to install
+make deps
 ```
 
 ## Usage
 ```
 how to use
+First time; make file executable; chmod +x main.go
+After that; run:
+./main.go
 ```
 
 ## Contribute
